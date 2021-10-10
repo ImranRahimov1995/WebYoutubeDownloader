@@ -57,3 +57,30 @@ class MyYoutube(models.Model):
             info['resolutions'][res].download('media',filename=self.sl_title+'.mp4')
         
         return True
+
+
+    def downloadV2(self,choose):
+        yt = YouTube(str(self.link))
+        self.title = yt.title
+        self.sl_title = slugify(yt.title)
+        self.abs_path = str(settings.MEDIA_ROOT) + "/" + self.sl_title
+
+
+        if choose == "audio":
+            stream = yt.streams.get_by_itag(140)
+            if stream:
+                stream.download('media',filename=self.sl_title) 
+                return('Done')           
+            else:
+                return('Failed')
+        else:
+            stream = yt.streams.get_by_itag(137)
+            if not stream:
+                stream = yt.streams.get_by_itag(22)
+                if not stream:
+                    stream = yt.streams.get_by_itag(18)
+            stream.download('media',filename=self.sl_title) 
+            return('Done')
+            
+
+            

@@ -6,27 +6,7 @@ import os
 from django.http.response import HttpResponse
 
 
-def index(request):
-    if request.method == "POST":
-        form = Getlink(request.POST)
-        if form.is_valid():
-            link = form.cleaned_data['link']
-            yt = MyYoutube.objects.create(link=link)
-            request.session['user'] = yt.id
-            info = MyYoutube.get_info(yt,link=link)
 
-            return redirect('index')
-
-    if request.method == "GET":
-        form = Getlink()
-        id =request.session.get('user',None)
-        if id:
-            yt = get_object_or_404(MyYoutube,id=id)
-            info = MyYoutube.get_info(yt,link=yt.link)
-        else:
-            info=None
-        
-    return render(request,'index.html',{'form':form,'info':info},)
 
 
 def download_file(request,yt,res):
@@ -34,7 +14,7 @@ def download_file(request,yt,res):
     filepath = yt.abs_path
     f = open(filepath, 'rb')
 
-    if res == "mp3":
+    if res == "audio":
         filename += '.mp3'
 
         response = HttpResponse(f.read(), content_type='audio/mp3')
@@ -48,7 +28,6 @@ def download_file(request,yt,res):
         response['Content-Disposition'] = "attachment; filename=\"%s\"; filename*=utf-8''%s" % (filename, filename)
     f.close()
     os.remove(filepath)
-    del request.session['user']
     return response
 
 def upload_file(request,res):
@@ -58,3 +37,23 @@ def upload_file(request,res):
     return download_file(request,yt,res)
 
 
+def index(request):
+    if request.method == "POST":
+        form = Getlink(request.POST)
+        if form.is_valid():
+            link = form.cleaned_data['link']
+            choose = form.cleaned_data['choose']
+            print(choose,link)
+            yt = MyYoutube.objects.create(link=link)
+            status = yt.downloadV2(choose=choose)
+            if status == "Failed":
+                return redirect('index')
+            else:
+                return download_file(request,yt=yt,res=str(choose))
+
+
+    if request.method == "GET":
+        form = Getlink()
+        info = None
+        
+    return render(request,'index.html',{'form':form,'info':info},)
