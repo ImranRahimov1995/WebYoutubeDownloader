@@ -9,7 +9,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Festive&display=swap" rel="stylesheet">
     <title>Download From Youtube</title>
 </head>
 <body>
@@ -21,10 +23,15 @@
   padding: 10px;
   border: 3px solid #ee0e0e;
 }
+
+.text {
+    font-family: 'Festive', cursive;
+    font-size: 60px;    
+}
 </style>
 
 <div class='main'>    
-    <h1>Welcome to download from Youtube page </h1>
+    <h1 class='text'>Welcome to download from Youtube page </h1>
     <br>
 
     {% if info %}
@@ -40,10 +47,19 @@
     <form action="." id="payment" method="post">
         {{form|crispy}}
         {% csrf_token %}
-        <input type="submit" value="Download">
+        <input class="btn btn-success" id='btn' type="submit" value="Download">
     </form>
 </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $( "#btn" ).click(function() {
+            setTimeout(function(){ 
+                $('.textinput').val("");
+            }, 6);
+        });
+    </script>
 
 </body>
 </html>

@@ -43,17 +43,21 @@ def index(request):
         if form.is_valid():
             link = form.cleaned_data['link']
             choose = form.cleaned_data['choose']
-            print(choose,link)
+            request.session['user'] = str(choose)
+            
             yt = MyYoutube.objects.create(link=link)
             status = yt.downloadV2(choose=choose)
             if status == "Failed":
                 return redirect('index')
             else:
                 return download_file(request,yt=yt,res=str(choose))
-
+    
 
     if request.method == "GET":
-        form = Getlink()
+        sv =request.session.get('user', None)
+        if not sv:
+            sv = 'video'
+        form = Getlink(initial={'choose': sv})
         info = None
         
     return render(request,'index.html',{'form':form,'info':info},)

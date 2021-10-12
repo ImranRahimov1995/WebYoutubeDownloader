@@ -74,11 +74,9 @@ class MyYoutube(models.Model):
             else:
                 return('Failed')
         else:
-            stream = yt.streams.get_by_itag(137)
+            stream = yt.streams.get_by_itag(22)
             if not stream:
-                stream = yt.streams.get_by_itag(22)
-                if not stream:
-                    stream = yt.streams.get_by_itag(18)
+                stream = yt.streams.get_by_itag(18)
             stream.download('media',filename=self.sl_title) 
             return('Done')
             
