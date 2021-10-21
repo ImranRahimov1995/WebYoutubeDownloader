@@ -24,13 +24,26 @@
   margin: auto;
   margin-top: 50px;
   padding: 7%;
-  border: 3px solid #000000;
+  border: 2px solid #5A0808;
+  box-shadow: 15px 30px 20px #5A0808;
 }
 
 .text {
     font-family: 'Festive', cursive;
     font-size: 60px;    
 }
+label, option, .select{
+    color:#340303;
+    font-family: 'Festive', cursive;
+    font-size: 20px;
+}
+.btn{
+   font-family: 'Monospace';
+   background-color: #5A0808;
+
+}
+
+
 </style>
 
 <div class='main'>    
@@ -50,7 +63,7 @@
     <form action="." id="payment" method="post">
         {{form|crispy}}
         {% csrf_token %}
-        <input class="btn btn-success" id='btn' type="submit" value="Download">
+        <input class="btn btn-danger" id='btn' type="submit" value="Download">
     </form>
 </div>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
