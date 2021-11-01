@@ -9,55 +9,62 @@ from django.http.response import HttpResponse
 
 
 
-def download_file(request,yt,res):
-    filename = yt.sl_title
-    filepath = yt.abs_path
+def download_file(request,obj,resolution):
+
+    filename = obj.slug_title
+    filepath = obj.absolute_path
     f = open(filepath, 'rb')
 
-    if res == "audio":
+    if resolution == "audio":
         filename += '.mp3'
-
         response = HttpResponse(f.read(), content_type='audio/mp3')
         response['Content-Length'] = os.path.getsize(filepath)
-        response['Content-Disposition'] = "attachment; filename=\"%s\"; filename*=utf-8''%s" % (filename, filename)
-    else:   
-        filename += '.mp4'
+        response['Content-Disposition'] = "attachment; filename=\"%s\"; \
+                                filename*=utf-8''%s" % (filename, filename)
 
+    else:   
+
+        filename += '.mp4'
         response = HttpResponse(f.read(), content_type='video/mp4')
         response['Content-Length'] = os.path.getsize(filepath)
-        response['Content-Disposition'] = "attachment; filename=\"%s\"; filename*=utf-8''%s" % (filename, filename)
+        response['Content-Disposition'] = "attachment; filename=\"%s\"; \
+                                filename*=utf-8''%s" % (filename, filename)
+
     f.close()
+    #Delete downloaded file for so as not to take up space
     os.remove(filepath)
+    
     return response
 
-def upload_file(request,res):
-    id =request.session.get('user',None)
-    yt = get_object_or_404(MyYoutube,id=id)
-    up = yt.download(res)
-    return download_file(request,yt,res)
 
 
 def index(request):
+
     if request.method == "POST":
         form = Getlink(request.POST)
         if form.is_valid():
             link = form.cleaned_data['link']
-            choose = form.cleaned_data['choose']
-            request.session['user'] = str(choose)
+            choosed_format = form.cleaned_data['choose']
+            #Save user selected format in session 
+            # for inital data for new download
+            request.session['user'] = str(choosed_format)
+            request.session.modified = True
             
             yt = MyYoutube.objects.create(link=link)
-            status = yt.downloadV2(choose=choose)
+            #Status return form download method of class My_Youtube
+            status = yt.download(choosed_format=choosed_format)
             if status == "Failed":
                 return redirect('index')
             else:
-                return download_file(request,yt=yt,res=str(choose))
+                return download_file(request,obj=yt,
+                                    resolution=str(choosed_format))
     
 
     if request.method == "GET":
-        sv =request.session.get('user', None)
-        if not sv:
-            sv = 'video'
-        form = Getlink(initial={'choose': sv})
+        choose =request.session.get('user', None)
+        if not choose:
+            choose = 'video'
+        form = Getlink(initial={'choose': choose})
         info = None
-        
+
     return render(request,'index.html',{'form':form,'info':info},)

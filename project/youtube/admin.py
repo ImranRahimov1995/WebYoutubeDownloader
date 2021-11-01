@@ -1,3 +1,8 @@
 from django.contrib import admin
+from youtube.models import MyYoutube
 
-# Register your models here.
+
+class MyYoutubeAdmin(admin.ModelAdmin):
+    list_display = ['title', 'created']
+
+admin.site.register(MyYoutube,MyYoutubeAdmin)
