@@ -4,72 +4,44 @@ from django.utils.text import slugify
 from django.conf import settings
 
 
+
 class MyYoutube(models.Model):
 
 
     link = models.URLField()
-    title = models.CharField(max_length=255,null=True,blank=True)
-    abs_path = models.CharField(max_length=255,null=True,blank=True)
-    sl_title = models.CharField(max_length=255,null=True,blank=True)
+
+    title = models.CharField(max_length=255,
+                             null=True,blank=True)
+    absolute_path = models.CharField(max_length=255,
+                                     null=True,blank=True)
+    slug_title = models.CharField(max_length=255,
+                                 null=True,blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
 
 
-    
-    def get_info(self,link):
-        yt = YouTube(str(link))
+
+    def download(self,choosed_format):
+        """
+        This method download audio track if is exists.
+        Download video quality=720p, if is exists ,
+        if not download 480p.
         
-        sl_title = slugify(yt.title)
+        If the method worked correctly,and download file , 
+        the method returns the string Done
 
-        resolutions = {}
-
-        resolutions['1080'] = yt.streams.get_by_itag(137)
-
-        resolutions['720'] = yt.streams.get_by_itag(22)
-
-        resolutions['320'] = yt.streams.get_by_itag(18)
-
-        resolutions['mp3'] = yt.streams.get_by_itag(140)
-
-
-
-        info = {
-            'title': yt.title,
-            'slug_title': sl_title,
-            'abs_path': str(settings.MEDIA_ROOT) + "/" + sl_title,
-            'resolutions':resolutions
-        }
-
-        self.title = info['title']
-        self.abs_path =  info['abs_path']
-        self.sl_title = info['slug_title']      
-
-        return info
-
-
-    def download(self,res):
-        info = self.get_info(link=self.link)
-        if res == "mp3":
-            self.abs_path += '.mp3'
-            info['resolutions'][res].download('media',filename=self.sl_title+'.mp3')
-        else:
-            self.abs_path += '.mp4'
-            info['resolutions'][res].download('media',filename=self.sl_title+'.mp4')
-        
-        return True
-
-
-    def downloadV2(self,choose):
+        """        
         yt = YouTube(str(self.link))
         self.title = yt.title
-        self.sl_title = slugify(yt.title)
-        self.abs_path = str(settings.MEDIA_ROOT) + "/" + self.sl_title
-
-
-        if choose == "audio":
+        self.slug_title = slugify(yt.title)
+        self.absolute_path = str(settings.MEDIA_ROOT) + "/" \
+                                         + self.slug_title
+        self.save()
+        
+        if choosed_format == "audio":
             stream = yt.streams.get_by_itag(140)
             if stream:
-                stream.download('media',filename=self.sl_title) 
+                stream.download('media',filename=self.slug_title) 
                 return('Done')           
             else:
                 return('Failed')
@@ -77,8 +49,16 @@ class MyYoutube(models.Model):
             stream = yt.streams.get_by_itag(22)
             if not stream:
                 stream = yt.streams.get_by_itag(18)
-            stream.download('media',filename=self.sl_title) 
+            stream.download('media',filename=self.slug_title) 
             return('Done')
-            
 
-            
+ 
+    def __str__(self):
+        return self.title
+    
+
+    class Meta:
+        ordering = ('-created',)   
+        verbose_name = 'Youtube object'
+        verbose_name_plural = 'Youtube objects'
+
