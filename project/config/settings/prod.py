@@ -5,13 +5,13 @@ SECRET_KEY = get_random_secret_key
 
 DEBUG = False
 
+ALLOWED_HOSTS = [os.getenv('PUBLIC_IP','0.0.0.0')]
+
+
+
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': os.getenv("DB_NAME",'app_db'),
-         'USER':  os.getenv("DB_USER",'admin'),
-         'PASSWORD': os.getenv("DB_PASSWORD",'devpass'),
-         'HOST': os.getenv("DB_HOST",'postgresdb'),
-         'PORT': os.getenv("DB_HOST",'5432'),
-     }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
