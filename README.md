@@ -31,6 +31,8 @@ git clone https://github.com/ImranRahimov1995/WebYoutubeDownloader.git
 ____________________________________________________________________________
 ### Or run app in production with docker
 
+##### git checkout Dockerize
+
 cd WebYoutubeDownloader/
 
 docker-compose build \
