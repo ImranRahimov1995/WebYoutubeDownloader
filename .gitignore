@@ -85,7 +85,14 @@ local_settings.py
 
 .env
 db.sqlite3
+
 .venv
 venv
 
+
+
+.idea
+
 project/media
+project/static
+project/config/settings/pro.py
