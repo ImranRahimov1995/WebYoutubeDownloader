@@ -36,7 +36,7 @@ ____________________________________________________________________________
 cd WebYoutubeDownloader/
 
 docker-compose build \
-docker-compose run
+docker-compose up
 
 ____________________________________________________________________________
 ### Open browser (if docker)
