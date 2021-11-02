@@ -25,8 +25,8 @@ git clone https://github.com/ImranRahimov1995/WebYoutubeDownloader.git
 
 ###### Run this commands for installing modules and activate venv , and running server :
 
-. ./smart-command/install.sh \
-. ./smart-command/run-server.sh
+. ./smart-commands/install.sh \
+. ./smart-commands/run-server.sh
 
 ____________________________________________________________________________
 ### Or run app in production with docker
