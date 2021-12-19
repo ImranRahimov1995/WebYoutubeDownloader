@@ -1,0 +1,25 @@
+version: "3"
+
+
+services:
+  web:
+    restart: always
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.local
+    build:
+      context: ./project
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+
+  nginx:
+    build: 
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    volumes: 
+      - ./project/static/:/static
+      - ./project/media/:/media
+    depends_on: 
+      - web
+    ports: 
+      - "80:80"

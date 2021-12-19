@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     #3rd part
     'youtube',
     'crispy_forms',
+    'psycopg2',
 ]
 
 MIDDLEWARE = [
