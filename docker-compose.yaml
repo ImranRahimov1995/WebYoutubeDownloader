@@ -11,16 +11,3 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-
-  nginx:
-    restart: always
-    build: 
-      context: ./docker/nginx
-      dockerfile: Dockerfile
-    volumes: 
-      - ./project/static/:/static
-      - ./project/media/:/media
-    depends_on: 
-      - web
-    ports: 
-      - "80:80"
