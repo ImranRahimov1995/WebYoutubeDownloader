@@ -5,7 +5,7 @@ services:
   web:
     restart: always
     environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.local
+      - DJANGO_SETTINGS_MODULE=config.settings.prod
     build:
       context: ./project
       dockerfile: Dockerfile
@@ -13,6 +13,7 @@ services:
       - "8000:8000"
 
   nginx:
+    restart: always
     build: 
       context: ./docker/nginx
       dockerfile: Dockerfile
