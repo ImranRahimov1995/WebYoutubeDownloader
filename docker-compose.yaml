@@ -4,6 +4,8 @@ version: "3"
 services:
   web:
     restart: always
+    volumes:
+      - ./project/static:/project/static
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.prod
     build:
