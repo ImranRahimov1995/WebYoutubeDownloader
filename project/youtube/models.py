@@ -3,6 +3,14 @@ from pytube import YouTube
 from django.utils.text import slugify
 from django.conf import settings
 
+class Visitor(models.Model):
+    user_info = models.CharField(max_length=255,blank=True)
+    visit_time = models.DateTimeField(auto_now_add=True)
+        
+    class Meta:
+        ordering = ('-visit_time',)
+        verbose_name = 'Visitor'
+        verbose_name_plural = 'Visitors'
 
 
 class MyYoutube(models.Model):
@@ -19,6 +27,7 @@ class MyYoutube(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
 
+    user_info = models.CharField(max_length=255,blank=True)
 
 
     def download(self,choosed_format):
