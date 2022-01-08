@@ -20,8 +20,6 @@ class Getlink(forms.Form):
     def clean_link(self):
         data = self.cleaned_data['link']
         custom_validate,custom_validate2 = match(REGEX,data) ,match(REGEX2,data)
-        if not custom_validate or not custom_validate2:
-            print(custom_validate)
-            print(custom_validate2)
+        if not custom_validate and not custom_validate2:
             raise ValidationError("Please enter youtube link")
         return data
