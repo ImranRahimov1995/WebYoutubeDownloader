@@ -13,7 +13,7 @@ def get_info_about_user(request):
     about_device  = user_agent.split(')')[0].split('(')[1]
     url = f'https://api.iplocation.net/?ip={ip}'
     country = requests.get(url).json()['country_name']
-    return country+"|"+ip+"|"+about_device
+    return country+" | "+ip+" | "+about_device
 
 def download_file(request,obj,resolution):
 
