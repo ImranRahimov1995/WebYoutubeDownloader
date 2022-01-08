@@ -1,10 +1,11 @@
+import os
+
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.sessions.models import Session
 from .forms import Getlink
 from .models import MyYoutube
-import os
 from django.http.response import HttpResponse
-
+from pprint import pprint
 
 
 
@@ -39,7 +40,7 @@ def download_file(request,obj,resolution):
 
 
 def index(request):
-
+    pprint(request.META)
     if request.method == "POST":
         form = Getlink(request.POST)
         if form.is_valid():
