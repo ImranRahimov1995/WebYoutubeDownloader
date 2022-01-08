@@ -43,6 +43,8 @@ def index(request):
     print(request.META['HTTP_X_REAL_IP'])
     print(request.META['HTTP_USER_AGENT'])
     print(len(request.META['HTTP_USER_AGENT']))
+    print(type(request.META['HTTP_USER_AGENT']))
+
     if request.method == "POST":
         form = Getlink(request.POST)
         if form.is_valid():
