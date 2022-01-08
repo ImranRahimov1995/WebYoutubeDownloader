@@ -1,14 +1,19 @@
 import os
-
+import requests
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.sessions.models import Session
 from .forms import Getlink
 from .models import MyYoutube
 from django.http.response import HttpResponse
-from pprint import pprint
 
 
-
+def get_info_about_user(request):
+    user_agent = request.META['HTTP_USER_AGENT']
+    ip = request.META['HTTP_X_REAL_IP']
+    about_device  = user_agent.split(')')[0].split('(')[1]
+    url = f'https://api.iplocation.net/?ip={ip}'
+    country = requests.get(url).json()['country_name']
+    return country ,ip, about_device
 
 def download_file(request,obj,resolution):
 
@@ -40,11 +45,8 @@ def download_file(request,obj,resolution):
 
 
 def index(request):
-    print(request.META['HTTP_X_REAL_IP'])
-    print(request.META['HTTP_USER_AGENT'])
-    print(len(request.META['HTTP_USER_AGENT']))
-    print(type(request.META['HTTP_USER_AGENT']))
-
+    country , ip , about_device = get_info_about_user(request)
+    print(country,ip,about_device)
     if request.method == "POST":
         form = Getlink(request.POST)
         if form.is_valid():
