@@ -40,7 +40,9 @@ def download_file(request,obj,resolution):
 
 
 def index(request):
-    pprint(request.META)
+    print(request.META['HTTP_X_REAL_IP'])
+    print(request.META['HTTP_USER_AGENT'])
+    print(len(request.META['HTTP_USER_AGENT']))
     if request.method == "POST":
         form = Getlink(request.POST)
         if form.is_valid():
