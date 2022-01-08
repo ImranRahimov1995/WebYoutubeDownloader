@@ -2,7 +2,29 @@ from django.db import models
 from pytube import YouTube
 from django.utils.text import slugify
 from django.conf import settings
+import re
 
+
+def cjk_detect(texts):
+    # korean
+    if re.search("[\uac00-\ud7a3]", texts):
+        return "ko"
+    # japanese
+    if re.search("[\u3040-\u30ff]", texts):
+        return "ja"
+    # chinese
+    if re.search("[\u4e00-\u9FFF]", texts):
+        return "zh"
+    return None
+
+class Visitor(models.Model):
+    user_info = models.CharField(max_length=255,blank=True)
+    visit_time = models.DateTimeField(auto_now_add=True)
+        
+    class Meta:
+        ordering = ('-visit_time',)
+        verbose_name = 'Visitor'
+        verbose_name_plural = 'Visitors'
 
 
 class MyYoutube(models.Model):
@@ -19,6 +41,7 @@ class MyYoutube(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
 
+    user_info = models.CharField(max_length=255,blank=True)
 
 
     def download(self,choosed_format):
@@ -33,7 +56,12 @@ class MyYoutube(models.Model):
         """        
         yt = YouTube(str(self.link))
         self.title = yt.title
-        self.slug_title = slugify(yt.title)
+        check_for_other_symb = cjk_detect(yt.title)
+        if check_for_other_symb:
+            self.slug_title = 'noname'
+        else:
+            self.slug_title = slugify(yt.title)
+
         self.absolute_path = str(settings.MEDIA_ROOT) + "/" \
                                          + self.slug_title
         self.save()

@@ -1,13 +1,19 @@
+import os
+import requests
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.sessions.models import Session
 from .forms import Getlink
-from .models import MyYoutube
-import os
+from .models import MyYoutube,Visitor
 from django.http.response import HttpResponse
 
 
-
-
+def get_info_about_user(request):
+    user_agent = request.META['HTTP_USER_AGENT']
+    ip = request.META['HTTP_X_REAL_IP']
+    about_device  = user_agent.split(')')[0].split('(')[1]
+    url = f'https://api.iplocation.net/?ip={ip}'
+    country = requests.get(url).json()['country_name']
+    return country+" | "+ip+" | "+about_device
 
 def download_file(request,obj,resolution):
 
@@ -39,7 +45,7 @@ def download_file(request,obj,resolution):
 
 
 def index(request):
-
+    user_info = get_info_about_user(request)
     if request.method == "POST":
         form = Getlink(request.POST)
         if form.is_valid():
@@ -50,7 +56,7 @@ def index(request):
             request.session['user'] = str(choosed_format)
             request.session.modified = True
             
-            yt = MyYoutube.objects.create(link=link)
+            yt = MyYoutube.objects.create(link=link,user_info=user_info)
             #Status return form download method of class My_Youtube
             status = yt.download(choosed_format=choosed_format)
             if status == "Failed":
@@ -61,10 +67,11 @@ def index(request):
     
 
     if request.method == "GET":
+        Visitor.objects.create(user_info=user_info)
         choose =request.session.get('user', None)
         if not choose:
             choose = 'video'
         form = Getlink(initial={'choose': choose})
-        info = None
+    info = None
 
     return render(request,'index.html',{'form':form,'info':info},)

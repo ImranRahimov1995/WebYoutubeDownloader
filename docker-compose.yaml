@@ -5,7 +5,7 @@ services:
   web:
     restart: always
     volumes:
-      - ./project/static:/project/static
+      - ./project:/project
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.prod
     build:

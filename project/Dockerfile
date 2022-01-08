@@ -2,6 +2,7 @@ FROM python:3.8.10
 
 WORKDIR /project
 
+ENV PYTHONUNBUFFERED=TRUE
 
 COPY requirements.txt .
 COPY entrypoint.sh .
