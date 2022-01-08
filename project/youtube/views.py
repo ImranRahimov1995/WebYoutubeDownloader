@@ -65,6 +65,6 @@ def index(request):
         if not choose:
             choose = 'video'
         form = Getlink(initial={'choose': choose})
-        info = None
+    info = None
 
     return render(request,'index.html',{'form':form,'info':info},)
