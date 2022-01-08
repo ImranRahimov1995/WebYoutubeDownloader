@@ -3,8 +3,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 
-REGEX = compile(r'^https://www.youtu')
-REGEX2 = compile(r'^https://youtu')
+REGEX = compile('^https://www.youtu')
+REGEX2 = compile('^https://youtu')
 
 class Getlink(forms.Form):
 
