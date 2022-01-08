@@ -21,5 +21,7 @@ class Getlink(forms.Form):
         data = self.cleaned_data['link']
         custom_validate,custom_validate2 = match(REGEX,data) ,match(REGEX2,data)
         if not custom_validate or not custom_validate2:
+            print(custom_validate)
+            print(custom_validate2)
             raise ValidationError("Please enter youtube link")
         return data
