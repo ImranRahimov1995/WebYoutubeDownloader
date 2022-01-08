@@ -42,7 +42,11 @@ class MyYoutube(models.Model):
         """        
         yt = YouTube(str(self.link))
         self.title = yt.title
-        self.slug_title = slugify(yt.title)
+        try:
+            self.slug_title = slugify(yt.title)
+        except:
+            self.slug_title = 'noname'
+            
         self.absolute_path = str(settings.MEDIA_ROOT) + "/" \
                                          + self.slug_title
         self.save()
