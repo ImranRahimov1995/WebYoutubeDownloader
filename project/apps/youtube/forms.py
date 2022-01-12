@@ -7,7 +7,6 @@ REGEX = compile('^https://www.youtu')
 REGEX2 = compile('^https://youtu')
 
 class Getlink(forms.Form):
-
     CHOICHES = (
         ('video','Video'),
         ('audio','Audio'),

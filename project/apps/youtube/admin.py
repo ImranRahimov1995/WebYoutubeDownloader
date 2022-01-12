@@ -1,5 +1,5 @@
 from django.contrib import admin
-from youtube.models import MyYoutube,Visitor
+from .models import MyYoutube,Visitor
 
 
 class MyYoutubeAdmin(admin.ModelAdmin):

@@ -1,19 +1,22 @@
 import os
 import requests
-from django.shortcuts import render,redirect,get_object_or_404
-from django.contrib.sessions.models import Session
+from django.shortcuts import render,redirect
 from .forms import Getlink
 from .models import MyYoutube,Visitor
 from django.http.response import HttpResponse
-
+from django.conf import settings
 
 def get_info_about_user(request):
     user_agent = request.META['HTTP_USER_AGENT']
-    ip = request.META['HTTP_X_REAL_IP']
+    if not settings.DEBUG:
+        ip = request.META['HTTP_X_REAL_IP']
+    else:
+        ip = "139.162.175.79"
     about_device  = user_agent.split(')')[0].split('(')[1]
     url = f'https://api.iplocation.net/?ip={ip}'
     country = requests.get(url).json()['country_name']
     return country+" | "+ip+" | "+about_device
+
 
 def download_file(request,obj,resolution):
 

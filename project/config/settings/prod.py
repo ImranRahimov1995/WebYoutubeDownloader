@@ -1,16 +1,12 @@
+import os
+
 from .base import *
-from django.core.management.utils import get_random_secret_key
 
+DEBUG = os.getenv("DEBUG",False)
 
-DEBUG = False
+ALLOWED_HOSTS = [
+    "youtube.impropy.me",
+    "www.youtube.impropy.me",
+    os.getenv('IP'),
+]
 
-ALLOWED_HOSTS = ["*"]
-
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
