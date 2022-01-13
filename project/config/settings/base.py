@@ -1,7 +1,10 @@
 import os
 from pathlib import Path
 
-SECRET_KEY = 'django-insecure-acxzw-3a84qp0k@10vcgik5sb=%m@k*iw27euw97l&)j*wiq!8'
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    'django-insecure-acxzw-3a84qp0k@10vcgik5sb=%m@k*iw27euw97l&)j*wiq!8',
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -12,8 +15,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #3rd part
+    # MY APPS
     'apps.youtube',
+
+    # 3rd part
     'crispy_forms',
 ]
 
@@ -93,7 +98,7 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-DOWNLIST_SESSION_KEY = 'user'
+_SESSION_KEY = 'user'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

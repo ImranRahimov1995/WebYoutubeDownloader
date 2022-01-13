@@ -8,6 +8,11 @@ from django.conf import settings
 
 
 class Visitor(models.Model):
+    """
+    Keep and save information about people's IP address ,
+    and part of [USER-AGENT] about Device
+
+    """
     user_info = models.CharField(max_length=255, blank=True)
     visit_time = models.DateTimeField(auto_now_add=True)
 
@@ -25,12 +30,20 @@ class MyYoutube(models.Model):
                                      null=True, blank=True)
     slug_title = models.CharField(max_length=255,
                                   null=True, blank=True)
-
     created = models.DateTimeField(auto_now_add=True)
     user_info = models.CharField(max_length=255, blank=True)
 
     def cjk_detect(self, texts):
-        # korean,china, korean detect
+
+        """
+        cjk-detect is checking title for
+        China,Japan,Korean hieroglyphs with regex
+
+        if title has some hieroglyphs
+        return str:
+
+
+        """
 
         if re.search("[\uac00-\ud7a3]", texts):
             return "ko"
@@ -42,7 +55,7 @@ class MyYoutube(models.Model):
             return "zh"
         return None
 
-    def download(self, selected_format):
+    def download(self, selected_format: str):
         """
         This method download audio track if is exists.
         Download video quality=720p, if is exists ,
@@ -51,11 +64,15 @@ class MyYoutube(models.Model):
         If the method worked correctly,and download file , 
         the method returns the string Done
 
+        We need checking for cjk see_details up .
+        Because if title has symbols we get Error connected with path to file.
+
         """
+
         yt = YouTube(str(self.link))
+
         self.title = yt.title
-        check_for_other_symb = self.cjk_detect(yt.title)
-        if check_for_other_symb:
+        if self.cjk_detect(yt.title):
             self.slug_title = 'noname'
         else:
             self.slug_title = slugify(yt.title)
