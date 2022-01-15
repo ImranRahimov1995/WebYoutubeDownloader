@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('apps.youtube.urls',),),
+    path('',include('pwa.urls',),),
 ]
 
 if settings.DEBUG:
