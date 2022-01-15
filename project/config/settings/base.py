@@ -107,7 +107,9 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-PWA_APP_NAME = 'YoutubeDownloader'
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static', 'serviceworker.js')
+
+PWA_APP_NAME = 'Youtube Downloader'
 PWA_APP_DESCRIPTION = "App for downloading from  youtube"
 PWA_APP_THEME_COLOR = '#000000'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
@@ -118,19 +120,19 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
 	{
-		'src': 'static/favicon32.png',
-		'sizes': '32x32'
+		'src': 'static/icon_for_mobile.png',
+		'sizes': '160x160'
 	}
 ]
 PWA_APP_ICONS_APPLE = [
 	{
-		'src': 'static/favicon32.png',
-		'sizes': '32x32'
+		'src': 'static/icon_for_mobile.png',
+		'sizes': '160x160'
 	}
 ]
 PWA_APP_SPLASH_SCREEN = [
 	{
-		'src': 'static/favicon32.png',
+		'src': 'static/icon_for_mobile.png',
 		'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
 	}
 ]
