@@ -29,6 +29,9 @@
 	  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.css"
 	  rel="stylesheet"
 	/>
+  {% load pwa %}
+  
+  {% progressive_web_app_meta %}
     <title>Download From Youtube</title>
 </head>
 <body>
@@ -64,21 +67,8 @@ label, option, .select{
     <h1 class='text'>Welcome to download from Youtube page </h1>
     <br>
 
-    {% if info %}
-    {{info.title}}
-    <hr>
-    {%for res in info.resolutions %}
-        {%if res %}
-        <a href='{%url 'upload' res=res %}'>{{res}}</a>
-        {%endif%}
-    {%endfor%}
-    {% endif %}
-    <hr>
-    <form action="." id="payment" method="post">
-        {{form|crispy}}
-        {% csrf_token %}
-        <input class="btn btn-danger" id='btn' type="submit" value="Download">
-    </form>
+    <p>Please check-up your network connection</p>
+
 </div>
 <footer class="text-center text-white" style="background-color: #f1f1f1;">
   <!-- Grid container -->
