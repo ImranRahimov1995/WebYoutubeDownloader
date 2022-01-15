@@ -107,8 +107,6 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR,'static/js','serviceworker.js')
-
 PWA_APP_NAME = 'YoutubeDownloader'
 PWA_APP_DESCRIPTION = "App for downloading from  youtube"
 PWA_APP_THEME_COLOR = '#000000'
