@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
 from .forms import Getlink
 from .models import Visitor
@@ -13,17 +14,22 @@ def index(request):
         if form.is_valid():
             link = form.cleaned_data['link']
             selected_format = form.cleaned_data['choose']
-            status, yt = create_myyoutube_object(
-                request, link, selected_format, user_info
-            )
-            if status == "Failed":
-                return redirect('index')
-            else:
-                return download_file_from_server(
-                    request,
-                    yt_object=yt,
-                    resolution=str(selected_format),
+            try:
+                status, yt = create_myyoutube_object(
+                    request, link, selected_format, user_info
                 )
+                if status == "Failed":
+                    return redirect('index')
+                else:
+                    return download_file_from_server(
+                        request,
+                        yt_object=yt,
+                        resolution=str(selected_format),
+                    )
+            except Exception:
+                messages.add_message(request, messages.WARNING, 'Please try other link.')
+                return redirect('index')
+
 
     if request.method == "GET":
         Visitor.objects.create(user_info=user_info)
@@ -33,4 +39,4 @@ def index(request):
             choose = 'video'
         form = Getlink(initial={'choose': choose})
 
-    return render(request, 'index.html', {'form': form, })
+    return render(request, 'index.html', {'form': form,})
